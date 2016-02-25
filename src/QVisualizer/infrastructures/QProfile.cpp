@@ -39,14 +39,14 @@ QProfile::QProfile(QWidget *parent)
     load->setObjectName(QString::fromUtf8("load"));
     load->setMinimumSize(QSize(60, 0));
     load->setMaximumSize(QSize(60, 16777215));
-    load->setText(QApplication::translate("QProfile", "Load", 0, QApplication::UnicodeUTF8));
+    load->setText(QApplication::translate("QProfile", "Load", 0));
     gridLayout->addWidget(load, 0, 0, 1, 1);
 
     save = new QPushButton(profile);
     save->setObjectName(QString::fromUtf8("save"));
     save->setMinimumSize(QSize(60, 0));
     save->setMaximumSize(QSize(60, 16777215));
-    save->setText(QApplication::translate("QProfile", "Save", 0, QApplication::UnicodeUTF8));
+    save->setText(QApplication::translate("QProfile", "Save", 0));
     gridLayout->addWidget(save, 0, 1, 1, 1);
 }
 

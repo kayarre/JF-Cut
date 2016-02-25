@@ -20,7 +20,7 @@ QCommom::QCommom() :
     render_(NULL), parent_(NULL), panel_(NULL)
 {}
 
-QCommom::QCommom(QWidget* parent, Qt::WFlags flags) :
+QCommom::QCommom(QWidget* parent, Qt::WindowFlags flags) :
     render_(NULL), parent_(parent), panel_(NULL)
 {}
 

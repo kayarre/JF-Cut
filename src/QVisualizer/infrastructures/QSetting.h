@@ -25,7 +25,7 @@
 
 #include <gl/glew.h>
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 #include "QStructure.h"
 

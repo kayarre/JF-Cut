@@ -43,8 +43,8 @@ signals:
     void signalControlPointsChanged();
 
 public slots:
-    void slotSetPartition(::size_t partitionSize, float *partiionData);
-    void slotInsertHistogram(::size_t histogramSize, float *histogramData);
+    void slotSetPartition( ::size_t partitionSize, float *partiionData);
+    void slotInsertHistogram( ::size_t histogramSize, float *histogramData);
     void slotUpdateHistogram(int histogramID, float *histogramData);
     void slotUpdateTransferFunction();
     void slotClearHistogram();
@@ -55,7 +55,7 @@ public slots:
 public:
     float alphaBase;
 private:
-    std::vector<::size_t> histogramSize;
+    std::vector< ::size_t> histogramSize;
     std::vector<float*> histogramData;
     ::size_t partitionSize;
     float* partitionData;

@@ -21,7 +21,7 @@
 #ifndef QUTILITYUI_H
 #define QUTILITYUI_H
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 #include <QLinearGradient>
 

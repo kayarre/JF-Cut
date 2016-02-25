@@ -42,7 +42,7 @@ class QCommom : public QMainWindow
 
 public:
     QCommom();
-    QCommom(QWidget* parent, Qt::WFlags flags = 0);
+    QCommom(QWidget* parent, Qt::WindowFlags flags = 0);
     ~QCommom();
     
     QWidget* getParent();

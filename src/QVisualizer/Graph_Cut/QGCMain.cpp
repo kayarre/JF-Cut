@@ -15,13 +15,15 @@
  */
 
 #include <QtGui/QApplication>
-#include <QCleanlooksStyle>
+#include <QStyleFactory>
+//#include <QCleanlooksStyle>
 #include "QGCVisualizer.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setStyle(new QCleanlooksStyle());
+    a.setStyle(QStyleFactory::create("Fusion"));
+    //a.setStyle(new QCleanlooksStyle());
 
     QGCVisualizer w;
     w.show();

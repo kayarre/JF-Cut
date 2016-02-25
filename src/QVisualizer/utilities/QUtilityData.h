@@ -21,7 +21,8 @@
 #ifndef QUTILITY_H
 #define QUTILITY_H
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
+#include "QUtilityMath.h"
 
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #include "../infrastructures/QStructure.h"

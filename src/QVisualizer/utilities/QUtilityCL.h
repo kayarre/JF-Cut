@@ -42,10 +42,10 @@ public:
     QUtilityCL();
     ~QUtilityCL();
     
-    static ::size_t ceil(::cl_uint localSize, ::cl_uint globalSize);
-    static std::vector<::size_t> ceil(const std::vector<::size_t>& localSize, const cl_uint& textureSize);
-    static std::vector<::size_t> ceil(const std::vector<::size_t>& localSize, const cl_uint2& textureSize);
-    static std::vector<::size_t> ceil(const std::vector<::size_t>& localSize, const cl_uint4& textureSize);
+    static ::size_t ceil( ::cl_uint localSize, ::cl_uint globalSize);
+    static std::vector< ::size_t> ceil(const std::vector< ::size_t>& localSize, const cl_uint& textureSize);
+    static std::vector< ::size_t> ceil(const std::vector< ::size_t>& localSize, const cl_uint2& textureSize);
+    static std::vector< ::size_t> ceil(const std::vector< ::size_t>& localSize, const cl_uint4& textureSize);
     static cl::NDRange ceil(const cl::NDRange& localSize, cl_uint textureSize);
     static cl::NDRange ceil(const cl::NDRange& localSize, const cl_uint4& textureSize);
     
@@ -57,8 +57,8 @@ public:
 
     static cl_ulong getElapsedTime(std::vector<cl::Event>& events, const cl::CommandQueue& queue);
     
-    static std::vector<::size_t> getLocalSize(const cl_uint4& localSize);
-    static std::vector<::size_t> getGlobalSize(std::vector<::size_t>& localSize, const cl_uint4& textureSize);
+    static std::vector< ::size_t> getLocalSize(const cl_uint4& localSize);
+    static std::vector< ::size_t> getGlobalSize(std::vector< ::size_t>& localSize, const cl_uint4& textureSize);
     static cl::NDRange getGlobalSize(const cl::NDRange& localSize, const cl_uint4& textureSize);
 };
 

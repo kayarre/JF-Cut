@@ -23,7 +23,7 @@
 
 #include <gl/glew.h>
 
-#include <gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #include "../infrastructures/QSetting.h"
