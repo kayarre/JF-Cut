@@ -23,9 +23,9 @@
 #define QCOMMON_H
 
 #include <list>
-#include <QtGui/QMainWindow>
-#include <QtGui/QAction>
-#include <QtGui/QWidget>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QWidget>
 
 // This structure is used to save the actions in each file in different modes.
 struct Menu

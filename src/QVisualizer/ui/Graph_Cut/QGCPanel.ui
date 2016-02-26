@@ -78,7 +78,7 @@
           </size>
          </property>
          <property name="title">
-          <string>Graph Cut</string>
+          <string>Graph_Cut</string>
          </property>
          <layout class="QGridLayout" name="gridLayoutGraphCut">
           <property name="margin">
@@ -7211,7 +7211,7 @@
   <customwidget>
    <class>QTransferFunction1D</class>
    <extends>QWidget</extends>
-   <header>../infrastructures/QTransferFunction1D.h</header>
+   <header>infrastructures/QTransferFunction1D.h</header>
    <container>1</container>
    <slots>
     <slot>updateStepSize(int)</slot>
@@ -7222,13 +7222,13 @@
   <customwidget>
    <class>QGCWidget</class>
    <extends>QWidget</extends>
-   <header>../Graph Cut/QGCWidget.h</header>
+   <header>Graph_Cut/QGCWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>QProfile</class>
    <extends>QWidget</extends>
-   <header>../infrastructures/QProfile.h</header>
+   <header>infrastructures/QProfile.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

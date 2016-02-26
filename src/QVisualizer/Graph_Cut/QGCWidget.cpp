@@ -24,7 +24,7 @@
 
 #include <stdint.h>
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 #include <QKeyEvent>
 #include <QTime>

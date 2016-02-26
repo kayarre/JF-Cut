@@ -1,20 +1,37 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.0.0)
 
 project(JF-Cut)
+
+set(FIND_GLM ./FindGLM.cmake)
 
 # Find the QtWidgets library
 find_package(OpenCL REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(GLM REQUIRED)
+#find_package(GLM REQUIRED)
+#include_directories(${GLM_INCLUDE_DIRS})
+#link_directories(${GLM_LIBRARY_DIRS})
+#add_definitions(${GLM_DEFINITIONS})
+
 find_package(Qt5 COMPONENTS OpenGL Xml Gui Declarative Widgets  REQUIRED)
 find_package(GLEW REQUIRED )
 find_package(Boost COMPONENTS system)
 
-FIND_PATH(GLM_INCLUDE_DIR /usr/include)
+#FIND_PATH(GLM_INCLUDE_DIR /usr/include)
 
+# Interoperation with clogs
+option(CLOGS " use clogs algorithms " OFF)
+if (CLOGS)
+  find_path(CLOGS_INCLUDE clogs/clogs.h)
+  find_library(CLOGS_LIB clogs)
+  include_directories(${CLOGS_INCLUDE})
+  add_definitions(-DHAVE_CLOGS)
+endif()
 
 #set(CMAKE_AUTOMOC ON)
-#set(CMAKE_AUTOUIC ON)
+#SET(CMAKE_AUTOUIC ON)
+
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/bench/mfi.cpp
@@ -79,6 +96,12 @@ set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_render_ray_casting_preint.cl
 )
 
+Set (UI_FILES
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCVisualizer.ui
+	)
+
+
 QT5_WRAP_CPP(QGCPanel_hdr_moc ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h )
 qt5_wrap_ui(QGCPanel_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui)
 
@@ -95,35 +118,42 @@ QT5_WRAP_CPP(QCommon_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.h )
 QT5_WRAP_CPP(QHoverPoints_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.h )
 
 
-add_library(QGCPanel ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.cpp)
-target_link_libraries(QGCPanel Qt5::Widgets QGCPanel_ui_moc QGCPanel_hdr_moc)
+add_library(QGCPanel
+			${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.cpp
+			${QGCPanel_ui_moc})
+target_link_libraries(QGCPanel Qt5::Widgets Qt5::OpenGL ${QGCPanel_hdr_moc})
 
-add_library(QGCVisualizer ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.cpp)
-target_link_libraries(QGCVisualizer  Qt5::Widgets QGCVisualizer_ui_moc QGCVisualizer_hdr_moc)
+add_library(QGCVisualizer
+			${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.cpp
+			${QGCVisualizer_ui_moc} )
+target_link_libraries(QGCVisualizer  Qt5::Widgets ${QGCVisualizer_hdr_moc})
 
 add_library(QGCSetting ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.cpp)
-target_link_libraries(QGCSetting  Qt5::Widgets QGCSetting_hdr_moc)
+target_link_libraries(QGCSetting  Qt5::Widgets ${QGCSetting_hdr_moc})
 
 add_library(QGCWidget ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.cpp)
-target_link_libraries(QGCWidget  Qt5::Widgets QGCWidget_hdr_moc)
+target_link_libraries(QGCWidget  Qt5::Widgets ${QGCWidget_hdr_moc})
 
 add_library(QTransferFunction1D ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.cpp)
-target_link_libraries(QTransferFunction1D  Qt5::Widgets QTransferFunction1D_hdr_moc)
+target_link_libraries(QTransferFunction1D  Qt5::Widgets ${QTransferFunction1D_hdr_moc})
 
 add_library(QProfile ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.cpp)
-target_link_libraries(QProfile  Qt5::Widgets QProfile_hdr_moc)
+target_link_libraries(QProfile  Qt5::Widgets ${QProfile_hdr_moc})
 
 add_library(QHoverPoints ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.cpp)
-target_link_libraries(QHoverPoints  Qt5::Widgets QHoverPoints_hdr_moc)
+target_link_libraries(QHoverPoints  Qt5::Widgets ${QHoverPoints_hdr_moc})
 
 add_library(QCommon ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.cpp)
-target_link_libraries(QCommon  Qt5::Widgets QCommon_hdr_moc)
+target_link_libraries(QCommon Qt5::Gui Qt5::Widgets ${QCommon_hdr_moc} ${OpenCL_LIBRARIES})
 
-include_directories(${Boost_INCLUDE_DIR})
-add_executable(test_build ${SOURCE} ${HEADERS})
+include_directories(${Boost_INCLUDE_DIR} ${OpenCL_INCLUDE_DIRS} ${CLOGS_INCLUDE})
+add_executable(test_build ${SOURCE} ${HEADERS}
+				${QGCVisualizer_ui_moc}
+				${QGCPanel_ui_moc})
 target_link_libraries(test_build
   Qt5::Widgets Qt5::Gui Qt5::Xml 
-  GLM_INCLUDE_DIR ${Boost_LIBRARIES}
-  QGCVisualizer QGCPanel QGCSetting QGCWidget
-  QTransferFunction1D  QProfile QHoverPoints  QCommon
+  GLM_INCLUDE_DIR ${Boost_LIBRARIES}  ${OpenCL_LIBRARIES}
+  ${QGCVisualizer} ${QGCPanel} ${QGCSetting} ${QGCWidget}
+  ${QTransferFunction1D}  ${QProfile} ${QHoverPoints}  ${QCommon}
+  ${CLOGS_LIB}
   )

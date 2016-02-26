@@ -21,7 +21,7 @@
 #ifndef QGCSETTING_H
 #define QGCSETTING_H
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 

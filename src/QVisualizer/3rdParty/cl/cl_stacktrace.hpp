@@ -6042,7 +6042,7 @@ public:
         }
 
         cl_event tmp;
-		typedef void (__stdcall*cl_callback)(void *);
+		typedef void (__stdcall * cl_callback)(void *);
         cl_int err = detail::errHandler(
             ::clEnqueueNativeKernel(
                 object_, (cl_callback)userFptr, args.first, args.second,

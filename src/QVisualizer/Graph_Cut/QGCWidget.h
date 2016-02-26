@@ -20,9 +20,9 @@
 #include <vector>
 #include <list>
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
-#include <gtc/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #include <clogs/scan.h>
