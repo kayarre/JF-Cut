@@ -44,7 +44,8 @@
 
 #include <string>
 
-#include <QtGui>
+#include <QWidget>
+#include <QPen>
 
 QT_FORWARD_DECLARE_CLASS(QBypassWidget)
 

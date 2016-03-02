@@ -155,7 +155,7 @@
 #if defined(__CL_ENABLE_EXCEPTIONS)
 #include <exception>
 #include <sstream>
-#include <call_stack.hpp>
+#include <boost/asio/detail/call_stack.hpp>
 #endif // #if defined(__CL_ENABLE_EXCEPTIONS)
 
 #pragma push_macro("max")

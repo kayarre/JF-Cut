@@ -22,12 +22,20 @@
 
 #include <GL/glew.h>
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+
 #include <clogs/scan.h>
 
-#include <QGLWidget>
+#include <QOpenGLWidget> //qt5 replaced QGLWidget
 
 #include "QGCSetting.h"
 
@@ -39,8 +47,10 @@ class QKeyEvent;
 
 class QHoverPoints;
 class QGCPanel;
+#include <QWidget>
+#include <QPainter>
 
-class QGCWidget : public QGLWidget
+class QGCWidget : public QOpenGLWidget //qt5 replaced QGLWidget
 {
     Q_OBJECT
     

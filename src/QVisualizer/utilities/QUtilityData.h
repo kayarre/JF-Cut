@@ -21,10 +21,18 @@
 #ifndef QUTILITY_H
 #define QUTILITY_H
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "QUtilityMath.h"
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+
 #include "../infrastructures/QStructure.h"
 
 #ifdef max
@@ -70,17 +78,17 @@ public:
     {
         char* buffer((char*)content.data() + count);
         T* end = (T*)start + size;
-        if (TypeIsSame<T, char>::result::value || TypeIsSame<T, short>::result::value || TypeIsSame<T, int>::result::value || TypeIsSame<T, long>::result::value)
+        if (std::is_same<T, char>::result::value || std::is_same<T, short>::result::value || std::is_same<T, int>::result::value || std::is_same<T, long>::result::value)
         {
             for (T* i = (T*)start; i != end; i++)
                 *i = strtol(buffer, &buffer, 10);
         }
-        else if (TypeIsSame<T, unsigned char>::result::value || TypeIsSame<T, unsigned short>::result::value || TypeIsSame<T, unsigned int>::result::value || TypeIsSame<T, unsigned long>::result::value)
+        else if (std::is_same<T, unsigned char>::result::value || std::is_same<T, unsigned short>::result::value || std::is_same<T, unsigned int>::result::value || std::is_same<T, unsigned long>::result::value)
         {
             for (T* i = (T*)start; i != end; i++)
                 *i = strtoul(buffer, &buffer, 10);
         }
-        else if (TypeIsSame<T, float>::result::value || TypeIsSame<T, double>::result::value)
+        else if (std::is_same<T, float>::result::value || std::is_same<T, double>::result::value)
         {
             for (T* i = (T*)start; i != end; i++)
                 *i = strtod(buffer, &buffer);

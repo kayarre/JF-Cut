@@ -23,9 +23,17 @@
 
 #include <GL/glew.h>
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+
 #include "../infrastructures/QSetting.h"
 
 typedef struct

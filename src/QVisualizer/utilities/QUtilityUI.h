@@ -21,6 +21,7 @@
 #ifndef QUTILITYUI_H
 #define QUTILITYUI_H
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 #include <QLinearGradient>

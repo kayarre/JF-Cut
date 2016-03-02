@@ -28,7 +28,13 @@
 #include <fstream>
 #include <iostream>
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
 
 #if defined(__APPLE__) || defined(MACOSX)
     #define GL_SHARING_EXTENSION "cl_APPLE_gl_sharing"

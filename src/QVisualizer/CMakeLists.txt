@@ -2,6 +2,19 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(JF-Cut)
 
+
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#elseif(COMPILER_SUPPORTS_CXX0X)
+#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+
 set(FIND_GLM ./FindGLM.cmake)
 
 # Find the QtWidgets library
@@ -60,6 +73,8 @@ set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/bench/mfi.h
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/cl/cl_stacktrace.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack_msvc.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack.h # this is a new addition
+  
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/StackWalker.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.h
@@ -108,14 +123,13 @@ qt5_wrap_ui(QGCPanel_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.u
 QT5_WRAP_CPP(QGCVisualizer_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.h )
 qt5_wrap_ui(QGCVisualizer_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCVisualizer.ui)
 
-QT5_WRAP_CPP(QGCSetting_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.h )
+#QT5_WRAP_CPP(QGCSetting_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.h )
 QT5_WRAP_CPP(QGCWidget_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.h )
 QT5_WRAP_CPP(QTransferFunction1D_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.h )
 QT5_WRAP_CPP(QProfile_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.h )
 QT5_WRAP_CPP(QHoverPoints_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.h )
 
 QT5_WRAP_CPP(QCommon_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.h )
-QT5_WRAP_CPP(QHoverPoints_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.h )
 
 
 add_library(QGCPanel
@@ -126,13 +140,13 @@ target_link_libraries(QGCPanel Qt5::Widgets Qt5::OpenGL ${QGCPanel_hdr_moc})
 add_library(QGCVisualizer
 			${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.cpp
 			${QGCVisualizer_ui_moc} )
-target_link_libraries(QGCVisualizer  Qt5::Widgets ${QGCVisualizer_hdr_moc})
+target_link_libraries(QGCVisualizer  Qt5::Widgets Qt5::OpenGL ${QGCVisualizer_hdr_moc})
 
 add_library(QGCSetting ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.cpp)
 target_link_libraries(QGCSetting  Qt5::Widgets ${QGCSetting_hdr_moc})
 
 add_library(QGCWidget ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.cpp)
-target_link_libraries(QGCWidget  Qt5::Widgets ${QGCWidget_hdr_moc})
+target_link_libraries(QGCWidget Qt5::Widgets ${QGCWidget_hdr_moc})
 
 add_library(QTransferFunction1D ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.cpp)
 target_link_libraries(QTransferFunction1D  Qt5::Widgets ${QTransferFunction1D_hdr_moc})

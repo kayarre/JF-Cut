@@ -29,7 +29,20 @@
 #include <QKeyEvent>
 #include <QTime>
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+/*
+#if defined(__APPLE__) || defined(__MACOSX)
+#include <OpenCL/cl.hpp>
+#else
+#include <CL/cl.hpp>
+#endif
+*/
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+
 #include "../3rdParty/stacktrace/call_stack_msvc.hpp"
 #include "../3rdParty/stacktrace/call_stack_gcc.hpp"
 #include "../3rdParty/bench/mfi.h"
@@ -186,7 +199,7 @@ void QGCWidget::initData(const std::string &name)
             if (!QIO::getFileData(dataFilePath + objectFileName, bufferSource.data(), voxelSize * volumeSize1D))
                 throw QError(2, Q_RUNTIME_ERROR, "opening data file failed.");
         
-            int power = (int)(std::logf(volumeSize1D * sizeof(cl_float) / settings.bufferSizeVolume) / 3) + 1;
+            int power = (int)(std::log(volumeSize1D * sizeof(cl_float) / settings.bufferSizeVolume) / 3) + 1;
             int scale = 1 << power;
             cl_uint4 volumeScale = { scale, scale, scale, 1 };
             cl_uint4 volumeSizeS =

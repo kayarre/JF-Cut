@@ -21,7 +21,7 @@
 #ifndef QUTILITYGL_H
 #define QUTILITYGL_H
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 class QUtilityGL
 {

@@ -3,8 +3,8 @@
  * Copyright (c) 2012, Institute of CG & CAD, Tsinghua University.
  * All Rights Reserved.
  * 
- * @file    QSetting.h
- * @brief   QSetting class definition.
+ * @file    QError.h
+ * @brief   QError class definition.
  * 
  * This file defines the most often used settings such as
  *     volume offset and volume scale(also known as window width and window level),
@@ -21,7 +21,20 @@
 #ifndef QERROR_H
 #define QERROR_H
 
+#ifndef __CL_ENABLE_EXCEPTIONS
+#define __CL_ENABLE_EXCEPTIONS
+#endif
+
+#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+/*
+#if defined(__APPLE__) || defined(__MACOSX)
+#include <OpenCL/cl.hpp>
+#else
+#include <CL/cl.hpp>
+#endif
+*/
 
 #define Q_LOGIC_ERROR       -100
 #define Q_INVALID_ARGUMENT  -101
@@ -33,6 +46,7 @@
 #define Q_OVERFLOW_ERROR    -112
 #define Q_UNDERFLOW_ERROR   -113
 #define Q_SYSTEM_ERROR      -114
+
 
 class QError : public cl::Error
 {

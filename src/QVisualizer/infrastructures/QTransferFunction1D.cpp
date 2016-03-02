@@ -14,7 +14,7 @@
  * @date    2012/02/07
  */
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 #include "../infrastructures/QHoverPoints.h"
 #include "../utilities/QUtilityUI.h"

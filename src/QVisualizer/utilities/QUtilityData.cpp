@@ -17,7 +17,7 @@
 #include <limits>
 
 #include "../infrastructures/QHoverPoints.h"
-#include "../Graph Cut/QGCSetting.h"
+#include "../Graph_Cut/QGCSetting.h"
 #include "QIO.h"
 #include "QUtilityMath.h"
 #include "QUtilityData.h"
