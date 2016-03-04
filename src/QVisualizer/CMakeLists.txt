@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(JF-Cut)
 
+if(NOT CMAKE_BUILD_TYPE) 
+    set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_BUILD_TYPE)
 
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -153,7 +156,7 @@ include_directories(${Boost_INCLUDE_DIR}
                     ${GLUT_INCLUDE_DIRS}
                     $(GLEW_INCLUDE_DIRS)
                     )
-                    
+
 add_executable(test_build
 				${SOURCE} ${HEADERS}
 				)
@@ -162,5 +165,5 @@ target_link_libraries(test_build
   Qt5::Xml Qt5::Declarative
   ${GLM_INCLUDE_DIR} ${Boost_LIBRARIES}  ${OpenCL_LIBRARIES}
   ${CLOGS_LIB}/libclogs.so ${OPENGL_LIBRARIES} ${GLUT_LIBRARY}
-  dl ${GLEW_LIBRARIES}
+  ${GLEW_LIBRARIES} dl 
   )
