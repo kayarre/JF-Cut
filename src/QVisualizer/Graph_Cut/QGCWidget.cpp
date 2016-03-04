@@ -14,6 +14,11 @@
  * @date    2013/01/09
  */
 
+#ifndef __GLEW
+#define __GLEW
+#include <GL/glew.h>
+#endif
+
 #include <climits>
 #include <cmath>
 #include <iomanip> 
@@ -24,23 +29,25 @@
 
 #include <stdint.h>
 
-#include <GL/glew.h>
-
 #include <QKeyEvent>
 #include <QTime>
 
 #ifndef __CL_ENABLE_EXCEPTIONS
 #define __CL_ENABLE_EXCEPTIONS
 #endif
-/*
+
+
+#ifndef CL_STACKTRACE
+#include "../3rdParty/cl/cl_stacktrace.hpp"
+#endif
+
+#ifndef __OPEN_CL_CXX
+#define __OPEN_CL_CXX
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenCL/cl.hpp>
 #else
 #include <CL/cl.hpp>
 #endif
-*/
-#ifndef CL_STACKTRACE
-#include "../3rdParty/cl/cl_stacktrace.hpp"
 #endif
 
 #include "../3rdParty/stacktrace/call_stack_msvc.hpp"
@@ -55,6 +62,7 @@
 #include "../utilities/QUtilityConsole.h"
 #include "../infrastructures/QHoverPoints.h"
 #include "../infrastructures/QError.h"
+#include "QGCSetting.h"
 #include "QGCSetting.h"
 #include "QGCPanel.h"
 #include "QGCWidget.h"
@@ -74,7 +82,7 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
 static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 
 QGCWidget::QGCWidget(QWidget *parent)
-    : QGLWidget(parent),
+    : QOpenGLWidget(parent),
     corporation(), dataFileName(), dataFilePath(), objectFileName(), gradientFileName(), // Data file
     endian(ENDIAN_LITTLE), volumeSize1D(0), volumeSize(), boxSize(), thickness(), format(FORMAT_UNKNOWN),
     volumeMin(0.0f), volumeMax(0.0f), // Volumetric Data
@@ -117,8 +125,8 @@ QGCWidget::QGCWidget(QWidget *parent)
 {
     Q_INVOKABLE
     setMouseTracking(true);
-    setAutoBufferSwap(false);
-    setAutoFillBackground(false);
+    //setAutoBufferSwap(false); //commented out
+    //setAutoFillBackground(false);
 }
 
 QGCWidget::~QGCWidget()
@@ -200,8 +208,8 @@ void QGCWidget::initData(const std::string &name)
                 throw QError(2, Q_RUNTIME_ERROR, "opening data file failed.");
         
             int power = (int)(std::log(volumeSize1D * sizeof(cl_float) / settings.bufferSizeVolume) / 3) + 1;
-            int scale = 1 << power;
-            cl_uint4 volumeScale = { scale, scale, scale, 1 };
+            unsigned int scale = 1 << power;
+            cl_uint4 volumeScale = { scale, scale, scale, 1U };
             cl_uint4 volumeSizeS =
             {
                 (volumeSize.s[0] - 1) / volumeScale.s[0] + 1,
@@ -790,7 +798,7 @@ void QGCWidget::initOpenCL()
                     properties.push_back(CL_CONTEXT_PLATFORM);
                     properties.push_back((cl_context_properties)(*i)());
                     properties.push_back(0);
-                #else // Win32
+                #elif defined(_WIN32) // Win32
                     properties.push_back(CL_GL_CONTEXT_KHR);
                     properties.push_back((cl_context_properties)wglGetCurrentContext());
                     properties.push_back(CL_WGL_HDC_KHR);
@@ -1215,7 +1223,7 @@ void QGCWidget::initReduce(const std::string& options, const std::string& header
 void QGCWidget::initRendering(const std::string& options, const std::string& headers)
 {
     glGenBuffers(1, &glBuffer);
-    if (!QUtilityGL::checkGLStatus(__FILE__, __LINE__, "glGenBuffers()"))
+    if (!QUtilityGL::checkGLStatus((char*)__FILE__, __LINE__, (char*)"glGenBuffers()"))
         throw QError(2, Q_RUNTIME_ERROR, "glGenBuffers() failed.");
 
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBuffer);
@@ -1433,12 +1441,12 @@ void QGCWidget::updatePixelBuffer()
         if (glBuffer)
         {
             glDeleteBuffers(1, &this->glBuffer);
-            if (!QUtilityGL::checkGLStatus(__FILE__, __LINE__, "glDeleteBuffers()"))
+            if (!QUtilityGL::checkGLStatus((char *)__FILE__, __LINE__, (char *)"glDeleteBuffers()"))
                 throw QError(2, Q_RUNTIME_ERROR, "glDeleteBuffers() failed.");
         }
 
         glGenBuffers(1, &glBuffer);
-        if (!QUtilityGL::checkGLStatus(__FILE__, __LINE__, "glGenBuffers()"))
+        if (!QUtilityGL::checkGLStatus((char *)__FILE__, __LINE__, (char *)"glGenBuffers()"))
             throw QError(2, Q_RUNTIME_ERROR, "glGenBuffers() failed.");
 
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBuffer);
@@ -1472,7 +1480,7 @@ void QGCWidget::paintGL()
         drawVolume();
         drawWireFrame();
         paintForeground();
-        swapBuffers();
+        //swapBuffers();
     }
     catch (QError& e)
     {
@@ -1511,7 +1519,7 @@ void QGCWidget::drawVolumeCL()
     cl_uint sampleNumber = ui->spinBoxSampleNumber->value();
     cl_float windowWidth = (float)ui->verticalSliderWindowWidth->value() / ui->verticalSliderWindowWidth->maximum();
     cl_float windowLevel = (float)ui->verticalSliderWindowLevel->value() / ui->verticalSliderWindowLevel->maximum();
-    cl_uint4 viewSize = { ui->spinBoxViewSizeX->value(), ui->spinBoxViewSizeY->value(), 0, 0 };
+    cl_uint4 viewSize = { (unsigned int) ui->spinBoxViewSizeX->value(), (unsigned int) ui->spinBoxViewSizeY->value(), 0U, 0U };
     cl::NDRange local(ui->spinBoxLocalSize2DX->value(), ui->spinBoxLocalSize2DY->value());
     cl::NDRange global(QUtilityCL::ceil(local, viewSize));
     cl::Kernel* kernels = ui->radioButtonNormal->isChecked() ? kerRenderNormal : (ui->radioButtonPreIntegration->isChecked() ? kerRenderPreInt : kerRenderFeature);
@@ -1571,7 +1579,7 @@ void QGCWidget::drawVolume()
     drawVolumeCL();
 
     glDrawPixels(viewSize.x, viewSize.y, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    if (!QUtilityGL::checkGLStatus(__FILE__, __LINE__, "glDrawPixels()"))
+    if (!QUtilityGL::checkGLStatus((char *)__FILE__, __LINE__, (char *)"glDrawPixels()"))
         throw QError(2, Q_RUNTIME_ERROR, "glDrawPixels() failed.");
     
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
@@ -2015,7 +2023,7 @@ void QGCWidget::kmeans(cl_long& nsecKMeans, cl_uint offset)
 
     const Ui::QGCPanel* ui = panel->getUI();
     glm::vec4 weight = glm::normalize(glm::vec4(ui->doubleSpinBoxWeightX->value(), ui->doubleSpinBoxWeightY->value(), ui->doubleSpinBoxWeightZ->value(), ui->doubleSpinBoxWeightW->value()));
-    glm::vec4 scale = weight / std::numeric_limits<cl_uchar>::max();
+    glm::vec4 scale = weight / (glm::vec4) std::numeric_limits<cl_uchar>::max();
     kerCutDistribution.setArg(2, offset);
     kerCutDistribution.setArg(6, weight);
 
@@ -2123,7 +2131,7 @@ void QGCWidget::kmeans(cl_long& nsecKMeans, cl_uint offset)
 void QGCWidget::countActiveBlock(cl_long& nsecCount)
 {
     std::vector<cl::Event> countEvents(1);
-    clQueue.enqueueNDRangeKernel(kerCountNode, NULL, sizGlobal, sizLocal, NULL, &countEvents[0]);
+    clQueue.enqueueNDRangeKernel(kerCountNode, cl::NullRange, sizGlobal, sizLocal, NULL, &countEvents[0]);
     nsecCount += QUtilityCL::getElapsedTime(countEvents, clQueue);
     
     std::vector<cl::Event> scanEvents(2);
@@ -2653,9 +2661,9 @@ void QGCWidget::slotLoadGraphClicked()
         {
             cl_uint4 nodeSize =
             {
-                QUtilityCL::ceil(blockSize.s[0], volumeSize.s[0]),
-                QUtilityCL::ceil(blockSize.s[1], volumeSize.s[1]),
-                1, 1
+                (unsigned int) QUtilityCL::ceil(blockSize.s[0], volumeSize.s[0]),
+                (unsigned int) QUtilityCL::ceil(blockSize.s[1], volumeSize.s[1]),
+                1U, 1U
             };
             cl_uint nodeSize1D = nodeSize.s[0] * nodeSize.s[1] * nodeSize.s[2];
             std::vector<cl_node_2d> node(nodeSize1D);
@@ -2692,10 +2700,10 @@ void QGCWidget::slotLoadGraphClicked()
         {
             cl_uint4 nodeSize =
             {
-                QUtilityCL::ceil(blockSize.s[0], volumeSize.s[0]),
-                QUtilityCL::ceil(blockSize.s[1], volumeSize.s[1]),
-                QUtilityCL::ceil(blockSize.s[2], volumeSize.s[2]),
-                1
+               (unsigned int)QUtilityCL::ceil(blockSize.s[0], volumeSize.s[0]),
+               (unsigned int) QUtilityCL::ceil(blockSize.s[1], volumeSize.s[1]),
+               (unsigned int) QUtilityCL::ceil(blockSize.s[2], volumeSize.s[2]),
+                1U
             };
             cl_uint nodeSize1D = nodeSize.s[0] * nodeSize.s[1] * nodeSize.s[2];
             std::vector<cl_node_3d> node(nodeSize1D);
@@ -3068,7 +3076,7 @@ void QGCWidget::enqueue3DKernel(const cl::Kernel& kernel, cl_uint4 kernelSize, c
     const Ui::QGCPanel* ui = panel->getUI();
     cl::NDRange local(ui->spinBoxLocalSize3DX->value(), ui->spinBoxLocalSize3DY->value(), ui->spinBoxLocalSize3DZ->value());
     cl::NDRange global = QUtilityCL::getGlobalSize(local, kernelSize);
-    clQueue.enqueueNDRangeKernel(kernel, NULL, global, local, NULL, event);
+    clQueue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local, NULL, event);
 }
 
 void QGCWidget::clearTexture(const cl::Buffer& texture, cl_uint textureStride, cl::Event* event)
@@ -3148,7 +3156,7 @@ void QGCWidget::computeVisibility(cl_uint offset, cl::Event* event)
     cl_float windowWidth = (float)ui->verticalSliderWindowWidth->value() / ui->verticalSliderWindowWidth->maximum();
     cl_float windowLevel = (float)ui->verticalSliderWindowLevel->value() / ui->verticalSliderWindowLevel->maximum();
     cl_float alpha = (float)ui->spinBoxOpacity->value() / ui->spinBoxOpacity->maximum();
-    cl_uint4 viewSize = { ui->spinBoxViewSizeX->value(), ui->spinBoxViewSizeY->value(), 0, 0 };
+    cl_uint4 viewSize = { (unsigned int)ui->spinBoxViewSizeX->value(), (unsigned int)ui->spinBoxViewSizeY->value(), 0U, 0U };
     cl::NDRange local(ui->spinBoxLocalSize2DX->value(), ui->spinBoxLocalSize2DY->value());
     cl::NDRange global(QUtilityCL::ceil(local, viewSize));
     cl::Kernel& kernel = ui->radioButtonNormal->isChecked() ? kerRenderNormal[2] : (ui->radioButtonPreIntegration->isChecked() ? kerRenderPreInt[2] : kerRenderFeature[2]);
@@ -3250,7 +3258,7 @@ void QGCWidget::computeExcessFlowLazy(cl_long& nsecExcessFlow)
 void QGCWidget::computeCut(cl_long& nsecCut, bool& finished)
 {
     std::vector<cl::Event> initCutEvents(1);
-    clQueue.enqueueNDRangeKernel(kerInitCut, NULL, sizGlobal, sizLocal, NULL, &initCutEvents[0]);
+    clQueue.enqueueNDRangeKernel(kerInitCut, cl::NullRange, sizGlobal, sizLocal, NULL, &initCutEvents[0]);
     nsecCut += QUtilityCL::getElapsedTime(initCutEvents, clQueue);
     
     computeBFS(nsecCut);

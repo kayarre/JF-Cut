@@ -25,16 +25,20 @@
 #define __CL_ENABLE_EXCEPTIONS
 #endif
 
+
 #ifndef CL_STACKTRACE
+#define CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #endif
-/*
+
+#ifndef __OPEN_CL_CXX
+#define __OPEN_CL_CXX
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenCL/cl.hpp>
 #else
 #include <CL/cl.hpp>
 #endif
-*/
+#endif
 
 #define Q_LOGIC_ERROR       -100
 #define Q_INVALID_ARGUMENT  -101

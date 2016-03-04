@@ -21,7 +21,10 @@
 #ifndef QUTILITYGL_H
 #define QUTILITYGL_H
 
+#ifndef __GLEW
+#define __GLEW
 #include <GL/glew.h>
+#endif
 
 class QUtilityGL
 {

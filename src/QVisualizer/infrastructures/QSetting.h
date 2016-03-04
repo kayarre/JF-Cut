@@ -21,9 +21,12 @@
 #ifndef QSETTING_H
 #define QSETTING_H
 
-#include <vector>
-
+#ifndef __GLEW
+#define __GLEW
 #include <GL/glew.h>
+#endif
+
+#include <vector>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

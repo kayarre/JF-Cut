@@ -1,10 +1,5 @@
-/*
- * Copyright (c) 2009, Fredrik Orderud
- * License: BSD licence (http://www.opensource.org/licenses/bsd-license.php)
- *
- * @version 2015/07/05
- * - replaced pragma once with ifndef/define for greater compatibility
- */
+/* Copyright (c) 2009, Fredrik Orderud
+   License: BSD licence (http://www.opensource.org/licenses/bsd-license.php) */
 
 #ifndef _call_stack_h
 #define _call_stack_h
@@ -13,12 +8,6 @@
 #include <sstream>
 
 namespace stacktrace {
-
-int execAndCapture(std::string cmd, std::string& output);
-int addr2line(void* addr, std::string& line);
-int addr2line_all(std::vector<void*> addrsVector, std::string& output);
-int addr2line_all(void** addrs, int length, std::string& output);
-std::string addr2line_clean(std::string line);
 
 /*
  * Functions to set a fake call stack pointer for use in printing a stack trace.
@@ -58,12 +47,12 @@ class call_stack {
 public:
     /** Stack-trace consructor.
      \param num_discard - number of stack entries to discard at the top. */
-    call_stack(const size_t num_discard = 0);
+    call_stack (const size_t num_discard = 0);
 
-    virtual ~call_stack() throw();
+    virtual ~call_stack () throw();
 
     /** Serializes the entire call-stack into a text string. */
-    std::string to_string() const {
+    std::string to_string () const {
         std::ostringstream os;
         for (size_t i = 0; i < stack.size(); i++)
             os << stack[i].to_string() << std::endl;

@@ -13,7 +13,7 @@
 #include <cxxabi.h>
 #include <dlfcn.h>
 #include <stdlib.h>
-#include <boost/asio/detail/call_stack.hpp>
+#include "call_stack.hpp"
 
 #define MAX_DEPTH 32
 

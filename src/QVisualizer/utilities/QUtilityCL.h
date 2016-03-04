@@ -33,6 +33,7 @@
 #endif
 
 #ifndef CL_STACKTRACE
+#define CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #endif
 

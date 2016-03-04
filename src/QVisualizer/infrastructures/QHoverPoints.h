@@ -46,6 +46,12 @@
 
 #include <QWidget>
 #include <QPen>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QColorDialog>
+#include <QApplication>
+#include <QPainter>
+#include <QList>
 
 QT_FORWARD_DECLARE_CLASS(QBypassWidget)
 

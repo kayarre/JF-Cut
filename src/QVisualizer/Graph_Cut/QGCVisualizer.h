@@ -28,8 +28,9 @@
 #include "../templates/QCommon.h"
 #include "QGCWidget.h"
 #include "QGCPanel.h"
+#include "../utilities/QUtilityMath.h"
 
-class QGCVisualizer : public QCommom
+class QGCVisualizer : public QCommon
 {
     Q_OBJECT
 

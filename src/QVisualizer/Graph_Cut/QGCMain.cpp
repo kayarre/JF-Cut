@@ -14,7 +14,13 @@
  * @date    2013/11/06
  */
 
-#include <QtGui/QApplication>
+#ifndef __GLEW
+#define __GLEW
+#include <GL/glew.h>
+#endif
+
+//#include <QtGui>
+#include <QApplication>
 #include <QStyleFactory>
 //#include <QCleanlooksStyle>
 #include "QGCVisualizer.h"

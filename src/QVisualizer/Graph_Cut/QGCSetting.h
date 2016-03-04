@@ -21,7 +21,10 @@
 #ifndef QGCSETTING_H
 #define QGCSETTING_H
 
+#ifndef __GLEW
+#define __GLEW
 #include <GL/glew.h>
+#endif
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
@@ -31,6 +34,7 @@
 #endif
 
 #ifndef CL_STACKTRACE
+#define CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #endif
 

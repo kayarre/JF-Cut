@@ -14,7 +14,10 @@
  * @date    2012/02/07
  */
 
+#ifndef __GLEW
+#define __GLEW
 #include <GL/glew.h>
+#endif
 
 #include "../infrastructures/QHoverPoints.h"
 #include "../utilities/QUtilityUI.h"
@@ -198,7 +201,8 @@ void QTransferFunction1D::setAlpha()
 {
     float scaleAlpha = 1.0 / (alphaBase - 1.0f);
     QPolygonF *points = &hoverPoints->points();
-    QVector<QColor> *colors = &hoverPoints->colors();
+    QVector<QColor> test = hoverPoints->colors();
+    QVector<QColor> *colors = &test;
     QVector<QPointF>::iterator point = points->begin();
     for (auto i = colors->begin(); i != colors->end(); i++)
     {

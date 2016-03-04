@@ -23,9 +23,10 @@
 #define QCOMMON_H
 
 #include <list>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
+#include <QMainWindow>
+#include <QAction>
+#include <QWidget>
+#include <QFlags>
 
 // This structure is used to save the actions in each file in different modes.
 struct Menu
@@ -36,14 +37,14 @@ struct Menu
     std::list<QAction*> settings;
 };
 
-class QCommom : public QMainWindow
+class QCommon : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    QCommom();
-    QCommom(QWidget* parent, Qt::WindowFlags flags = 0);
-    ~QCommom();
+    QCommon();
+    QCommon(QWidget* parent, Qt::WindowFlags flags = 0);
+    ~QCommon();
     
     QWidget* getParent();
     QWidget* getRender();

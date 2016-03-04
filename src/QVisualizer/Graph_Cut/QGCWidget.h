@@ -17,10 +17,13 @@
 #ifndef QGCWIDGET
 #define QGCWIDGET
 
+#ifndef __GLEW
+#define __GLEW
+#include <GL/glew.h>
+#endif
+
 #include <vector>
 #include <list>
-
-#include <GL/glew.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
@@ -30,8 +33,10 @@
 #endif
 
 #ifndef CL_STACKTRACE
+#define CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
 #endif
+ 
 
 #include <clogs/scan.h>
 

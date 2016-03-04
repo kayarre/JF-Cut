@@ -16,42 +16,42 @@
 
 #include "QCommon.h"
 
-QCommom::QCommom() :
+QCommon::QCommon() :
     render_(NULL), parent_(NULL), panel_(NULL)
 {}
 
-QCommom::QCommom(QWidget* parent, Qt::WindowFlags flags) :
+QCommon::QCommon(QWidget* parent, Qt::WindowFlags flags) :
     render_(NULL), parent_(parent), panel_(NULL)
 {}
 
-QCommom::~QCommom()
+QCommon::~QCommon()
 {}
 
-QWidget* QCommom::getParent()
+QWidget* QCommon::getParent()
 {
     return parent_;
 }
 
-QWidget* QCommom::getRender()
+QWidget* QCommon::getRender()
 {
     return render_;
 }
 
-QWidget* QCommom::getPanel()
+QWidget* QCommon::getPanel()
 {
     return panel_;
 }
 
-struct Menu* QCommom::getMenus()
+struct Menu* QCommon::getMenus()
 {
     return &menus_;
 }
 
-void QCommom::initConnections()
+void QCommon::initConnections()
 {}
 
-void QCommom::initMenus()
+void QCommon::initMenus()
 {}
 
-void QCommom::initPanels()
+void QCommon::initPanels()
 {}

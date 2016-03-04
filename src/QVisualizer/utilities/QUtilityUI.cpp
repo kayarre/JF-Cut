@@ -20,6 +20,11 @@
 #include <QPolygonF>
 #include <QColor>
 #include <QImage>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QPushButton>
 
 #include "../infrastructures/QStructure.h"
 #include "../infrastructures/QHoverPoints.h"

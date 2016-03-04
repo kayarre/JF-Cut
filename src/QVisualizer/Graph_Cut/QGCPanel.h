@@ -21,6 +21,7 @@
 
 #include <QWidget>
 
+
 #include "ui_QGCPanel.h"
 
 class QGCPanel : public QWidget

@@ -23,6 +23,9 @@
 #include <vector>
 
 #include <QWidget>
+#include <QVector>
+#include <QColor>
+#include <QPolygonF>
 
 class QHoverPoints;
 

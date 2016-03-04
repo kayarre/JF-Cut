@@ -25,7 +25,11 @@ find_package(OpenGL REQUIRED)
 #link_directories(${GLM_LIBRARY_DIRS})
 #add_definitions(${GLM_DEFINITIONS})
 
-find_package(Qt5 COMPONENTS OpenGL Xml Gui Declarative Widgets  REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui
+			OpenGL Xml Declarative
+			Widgets 
+			REQUIRED
+			)
 find_package(GLEW REQUIRED )
 find_package(Boost COMPONENTS system)
 
@@ -43,21 +47,30 @@ endif()
 #set(CMAKE_AUTOMOC ON)
 #SET(CMAKE_AUTOUIC ON)
 
+add_definitions(-DUNICODE
+				-DQT_LARGEFILE_SUPPORT
+				-D__CL_ENABLE_EXCEPTIONS
+				-D__CL_ENABLE_DEBUG_
+				-DQT_CORE_LIB
+				-DQT_GUI_LIB
+				-DQT_DLL
+				-DQT_XML_LIB
+				-DNOMINMAX
+				)
+
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/bench/mfi.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack_gcc.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/StackWalker.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCMain.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QSetting.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QSetting.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities/QIO.cpp
@@ -72,19 +85,20 @@ set(SOURCE
 set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/bench/mfi.h
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/cl/cl_stacktrace.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack_msvc.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack.h # this is a new addition
-  
-  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/StackWalker.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/call_stack_gcc.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.h
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QError.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/StackWalker.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/stacktrace/StackWalker.h
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QSetting.h
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QStructure.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.h
   ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.h
   ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.h
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities/QIO.h
@@ -111,19 +125,19 @@ set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_render_ray_casting_preint.cl
 )
 
-Set (UI_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCVisualizer.ui
-	)
+#Set (UI_FILES
+#	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui
+#	${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCVisualizer.ui
+#	)
 
 
 QT5_WRAP_CPP(QGCPanel_hdr_moc ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h )
 qt5_wrap_ui(QGCPanel_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui)
 
-QT5_WRAP_CPP(QGCVisualizer_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.h )
+QT5_WRAP_CPP(QGCVisualizer_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.h)
 qt5_wrap_ui(QGCVisualizer_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCVisualizer.ui)
 
-#QT5_WRAP_CPP(QGCSetting_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.h )
+
 QT5_WRAP_CPP(QGCWidget_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.h )
 QT5_WRAP_CPP(QTransferFunction1D_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.h )
 QT5_WRAP_CPP(QProfile_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.h )
@@ -131,43 +145,74 @@ QT5_WRAP_CPP(QHoverPoints_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/Q
 
 QT5_WRAP_CPP(QCommon_hdr_moc  ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.h )
 
+LIST(APPEND SOURCE ${QGCPanel_hdr_moc} ${QCommon_hdr_moc}
+	${QGCVisualizer_ui_moc} ${QGCPanel_ui_moc}
+	${QGCVisualizer_hdr_moc} ${QGCPanel_hdr_moc}
+	${QGCWidget_hdr_moc}  ${QTransferFunction1D_hdr_moc}
+	${QProfile_hdr_moc} ${QHoverPoints_hdr_moc}
+	${QCommon_hdr_moc}
+	)
 
 add_library(QGCPanel
 			${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.cpp
 			${QGCPanel_ui_moc})
-target_link_libraries(QGCPanel Qt5::Widgets Qt5::OpenGL ${QGCPanel_hdr_moc})
+target_link_libraries(QGCPanel Qt5::Widgets ${QGCPanel_hdr_moc} ${QCommon_hdr_moc})
 
 add_library(QGCVisualizer
 			${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCVisualizer.cpp
-			${QGCVisualizer_ui_moc} )
-target_link_libraries(QGCVisualizer  Qt5::Widgets Qt5::OpenGL ${QGCVisualizer_hdr_moc})
+			${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.cpp
+			${QGCVisualizer_ui_moc} ${QGCPanel_ui_moc}
+			
+			)
+target_link_libraries(QGCVisualizer
+                        Qt5::Widgets
+                        Qt5::Core
+						${QGCVisualizer_hdr_moc}
+						${QGCPanel_hdr_moc}
+						${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.h
+						${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h
+                        ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.h
+						)
 
-add_library(QGCSetting ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCSetting.cpp)
-target_link_libraries(QGCSetting  Qt5::Widgets ${QGCSetting_hdr_moc})
-
-add_library(QGCWidget ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.cpp)
+add_library(QGCWidget
+            ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCWidget.cpp)
 target_link_libraries(QGCWidget Qt5::Widgets ${QGCWidget_hdr_moc})
 
-add_library(QTransferFunction1D ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.cpp)
+add_library(QTransferFunction1D
+           ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QTransferFunction1D.cpp)
 target_link_libraries(QTransferFunction1D  Qt5::Widgets ${QTransferFunction1D_hdr_moc})
 
-add_library(QProfile ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.cpp)
-target_link_libraries(QProfile  Qt5::Widgets ${QProfile_hdr_moc})
+add_library(QProfile
+            ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QProfile.cpp)
+target_link_libraries(QProfile  Qt5::Widgets ${QProfile_hdr_moc} )
 
-add_library(QHoverPoints ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.cpp)
+add_library(QHoverPoints
+            ${CMAKE_CURRENT_SOURCE_DIR}/infrastructures/QHoverPoints.cpp)
 target_link_libraries(QHoverPoints  Qt5::Widgets ${QHoverPoints_hdr_moc})
 
-add_library(QCommon ${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.cpp)
-target_link_libraries(QCommon Qt5::Gui Qt5::Widgets ${QCommon_hdr_moc} ${OpenCL_LIBRARIES})
+add_library(QCommongit 
+			${CMAKE_CURRENT_SOURCE_DIR}/templates/QCommon.cpp)
+target_link_libraries(QCommon  Qt5::Widgets Qt5::Core ${QCommon_hdr_moc})
 
-include_directories(${Boost_INCLUDE_DIR} ${OpenCL_INCLUDE_DIRS} ${CLOGS_INCLUDE})
-add_executable(test_build ${SOURCE} ${HEADERS}
+
+include_directories(${Boost_INCLUDE_DIR}
+                    ${OpenCL_INCLUDE_DIRS}
+                    ${CLOGS_INCLUDE}
+                    ${OPENGL_INCLUDE_DIRS} 
+                    ${GLUT_INCLUDE_DIRS}
+                    $(GLEW_INCLUDE_DIRS)
+                    )
+add_executable(test_build
+				${SOURCE} ${HEADERS}
 				${QGCVisualizer_ui_moc}
-				${QGCPanel_ui_moc})
+				${QGCPanel_ui_moc}
+				)
 target_link_libraries(test_build
-  Qt5::Widgets Qt5::Gui Qt5::Xml 
-  GLM_INCLUDE_DIR ${Boost_LIBRARIES}  ${OpenCL_LIBRARIES}
+  Qt5::Widgets  Qt5::Xml Qt5::Core Qt5::Gui	Qt5::OpenGL
+  Qt5::Xml Qt5::Declarative
+  ${GLM_INCLUDE_DIR} ${Boost_LIBRARIES}  ${OpenCL_LIBRARIES}
   ${QGCVisualizer} ${QGCPanel} ${QGCSetting} ${QGCWidget}
   ${QTransferFunction1D}  ${QProfile} ${QHoverPoints}  ${QCommon}
-  ${CLOGS_LIB}
+  ${CLOGS_LIB}/libclogs.so ${OPENGL_LIBRARIES} ${GLUT_LIBRARY}
+  dl ${GLEW_LIBRARIES}
   )

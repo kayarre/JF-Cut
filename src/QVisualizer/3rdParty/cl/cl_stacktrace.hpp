@@ -146,18 +146,10 @@
 #define CL_HPP_
 
 #ifdef _WIN32
-
 #include <windows.h>
 #include <malloc.h>
 #include <iterator>
 #include <intrin.h>
-
-#if defined(__CL_ENABLE_EXCEPTIONS)
-#include <exception>
-#include <sstream>
-#include <boost/asio/detail/call_stack.hpp>
-#endif // #if defined(__CL_ENABLE_EXCEPTIONS)
-
 #pragma push_macro("max")
 #undef max
 #if defined(USE_DX_INTEROP)
@@ -166,19 +158,38 @@
 #endif
 #endif // _WIN32
 
+#include "../stacktrace/call_stack.hpp"
+
+#if defined(__CL_ENABLE_EXCEPTIONS)
+#include <exception>
+#include <sstream>
+#endif // #if defined(__CL_ENABLE_EXCEPTIONS)
+
 // 
 #if defined(USE_CL_DEVICE_FISSION)
 #include <CL/cl_ext.h>
 #endif
 
+
+#ifndef __OPEN_CL
+#define __OPEN_CL
+#if defined(__APPLE__) || defined(__MACOSX)
+#include <OpenCL/opencl.h>
+#else
+#include <CL/opencl.h>
+#endif
+#endif //__OPEN_CL
+
+#ifndef __OPEN_GL
+#define __OPEN_GL
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenGL/OpenGL.h>
-#include <OpenCL/opencl.h>
 #include <libkern/OSAtomic.h>
 #else
 #include <GL/gl.h>
-#include <CL/opencl.h>
 #endif // !__APPLE__
+#endif //__OPEN_GL
+
 
 // To avoid accidentally taking ownership of core OpenCL types
 // such as cl_kernel constructors are made explicit
@@ -345,7 +356,7 @@ protected:
         if (!error.empty())
             s << error << ", ";
         s << code << ", " << errStr_ << std::endl;
-        errST_.serialize(s);
+        //errST_.serialize(s);
     }
 
 public:
@@ -6042,7 +6053,7 @@ public:
         }
 
         cl_event tmp;
-		typedef void (__stdcall * cl_callback)(void *);
+		typedef void (*cl_callback)(void *);
         cl_int err = detail::errHandler(
             ::clEnqueueNativeKernel(
                 object_, (cl_callback)userFptr, args.first, args.second,

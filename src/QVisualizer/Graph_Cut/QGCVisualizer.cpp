@@ -16,10 +16,10 @@
 
 #include <fstream>
 
-#include "../utilities/QUtilityMath.h"
+//#include "../utilities/QUtilityMath.h"
 #include "QGCVisualizer.h"
 
-QGCVisualizer::QGCVisualizer(QWidget* parent) : QCommom(parent)
+QGCVisualizer::QGCVisualizer(QWidget* parent) : QCommon(parent)
 {
     ui.setupUi(this);
 
