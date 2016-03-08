@@ -165,30 +165,18 @@
 #include <sstream>
 #endif // #if defined(__CL_ENABLE_EXCEPTIONS)
 
-// 
 #if defined(USE_CL_DEVICE_FISSION)
 #include <CL/cl_ext.h>
 #endif
 
-
-#ifndef __OPEN_CL
-#define __OPEN_CL
-#if defined(__APPLE__) || defined(__MACOSX)
-#include <OpenCL/opencl.h>
-#else
-#include <CL/opencl.h>
-#endif
-#endif //__OPEN_CL
-
-#ifndef __OPEN_GL
-#define __OPEN_GL
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenGL/OpenGL.h>
+#include <OpenCL/opencl.h>
 #include <libkern/OSAtomic.h>
 #else
 #include <GL/gl.h>
-#endif // !__APPLE__
-#endif //__OPEN_GL
+#include <CL/opencl.h>
+#endif //__OPEN_CL
 
 
 // To avoid accidentally taking ownership of core OpenCL types

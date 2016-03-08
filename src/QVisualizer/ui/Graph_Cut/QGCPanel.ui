@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1600</width>
-    <height>1200</height>
+    <width>1200</width>
+    <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -60,7 +60,16 @@
        <string>Volume Rendering</string>
       </property>
       <layout class="QGridLayout" name="gridLayoutVolumeRendering">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>6</number>
+       </property>
+       <property name="topMargin">
+        <number>6</number>
+       </property>
+       <property name="rightMargin">
+        <number>6</number>
+       </property>
+       <property name="bottomMargin">
         <number>6</number>
        </property>
        <item row="0" column="0">
@@ -81,7 +90,16 @@
           <string>Graph_Cut</string>
          </property>
          <layout class="QGridLayout" name="gridLayoutGraphCut">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
            <number>6</number>
           </property>
           <item row="2" column="1">
@@ -133,13 +151,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutHeightField">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="0">
@@ -264,13 +291,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutMethod">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="2">
@@ -395,13 +431,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTile2D">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="2">
@@ -507,13 +552,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTile3D">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="1" column="5">
@@ -2127,13 +2181,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutMaxGroup">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="4">
@@ -2211,13 +2274,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutLocal1D">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="0">
@@ -2301,13 +2373,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutLocal2D">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="4">
@@ -2419,13 +2500,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutLocal3D">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="2">
@@ -2810,13 +2900,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutBrushingShape">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="4">
@@ -2951,13 +3050,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutModeType">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="0">
@@ -3073,13 +3181,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutBrushingObject">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="0">
@@ -3207,13 +3324,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutModeEdit">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="3">
@@ -3893,13 +4019,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTextureGraph">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="2">
@@ -4005,13 +4140,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTextureGradient">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="3">
@@ -4117,13 +4261,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTextureFeature">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="3">
@@ -4229,13 +4382,22 @@
                  </size>
                 </property>
                 <layout class="QGridLayout" name="gridLayoutTextureCut">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>24</number>
                  </property>
                  <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <property name="margin">
                   <number>0</number>
                  </property>
                  <item row="0" column="4">
@@ -4377,7 +4539,16 @@
        <string>Rendering</string>
       </property>
       <layout class="QGridLayout" name="gridLayoutRendering">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>6</number>
+       </property>
+       <property name="topMargin">
+        <number>6</number>
+       </property>
+       <property name="rightMargin">
+        <number>6</number>
+       </property>
+       <property name="bottomMargin">
         <number>6</number>
        </property>
        <item row="0" column="1">
@@ -4401,7 +4572,16 @@
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayoutTransferFunctionEditor">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
            <number>6</number>
           </property>
           <item row="0" column="0">
@@ -4441,7 +4621,16 @@
           <string>Window</string>
          </property>
          <layout class="QGridLayout" name="gridLayoutWindow">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
            <number>6</number>
           </property>
           <item row="2" column="1">
@@ -4649,13 +4838,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutTransferFunctionSettings">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="1">
@@ -4720,13 +4918,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutInterpolation">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="1">
@@ -4832,13 +5039,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutPointNumber">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="0">
@@ -4953,13 +5169,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutLayout">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="0">
@@ -5074,13 +5299,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutColorSpace">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="2">
@@ -5869,13 +6103,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutProjectionMode">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="2">
@@ -6383,13 +6626,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutRayCastingMode">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="1">
@@ -6514,13 +6766,22 @@
               </size>
              </property>
              <layout class="QGridLayout" name="gridLayoutRayCastingObject">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <property name="horizontalSpacing">
                <number>24</number>
               </property>
               <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-              <property name="margin">
                <number>0</number>
               </property>
               <item row="0" column="0">

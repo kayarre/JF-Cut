@@ -59,10 +59,13 @@ add_definitions(-DUNICODE
 				-DQT_DLL
 				-DQT_XML_LIB
 				-DNOMINMAX
+				-DUNIX
 				)
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/cl)
 
 set(SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/bench/mfi.cpp
@@ -111,6 +114,9 @@ set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities/QUtilityGL.h
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities/QUtilityMath.h
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities/QUtilityUI.h
+ )
+ 
+ set(OPENCL_GRAPHCUT_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_bfs_block.cl
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_compute_capacity.cl
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_compute_cut.cl
@@ -128,6 +134,11 @@ set(HEADERS
   ${CMAKE_CURRENT_SOURCE_DIR}/cl/GraphCut/graphcut_render_ray_casting_preint.cl
 )
 
+set(OPENCL_INFRASTRUCTURES_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/cl/Infrastructures/initialization.cl
+  ${CMAKE_CURRENT_SOURCE_DIR}/cl/Infrastructures/integration.cl
+  ${CMAKE_CURRENT_SOURCE_DIR}/cl/Infrastructures/reduce.cl 
+)
 
 QT5_WRAP_CPP(QGCPanel_hdr_moc ${CMAKE_CURRENT_SOURCE_DIR}/Graph_Cut/QGCPanel.h )
 qt5_wrap_ui(QGCPanel_ui_moc  ${CMAKE_CURRENT_SOURCE_DIR}/ui/Graph_Cut/QGCPanel.ui)
@@ -158,7 +169,8 @@ include_directories(${Boost_INCLUDE_DIR}
                     )
 
 add_executable(test_build
-				${SOURCE} ${HEADERS}
+				${SOURCE} ${HEADERS} ${OPENCL_GRAPHCUT_FILES}
+				${OPENCL_INFRASTRUCTURES_FILES}
 				)
 target_link_libraries(test_build
   Qt5::Widgets  Qt5::Xml Qt5::Core Qt5::Gui	Qt5::OpenGL
@@ -167,3 +179,11 @@ target_link_libraries(test_build
   ${CLOGS_LIB}/libclogs.so ${OPENGL_LIBRARIES} ${GLUT_LIBRARY}
   ${GLEW_LIBRARIES} dl 
   )
+  
+set(build_GraphCut_dir ${CMAKE_CURRENT_BINARY_DIR}/cl/GraphCut)
+file(MAKE_DIRECTORY ${build_GraphCut_dir})
+file(COPY ${OPENCL_GRAPHCUT_FILES} DESTINATION ${build_GraphCut_dir})
+  
+set(build_Infrastructures_dir ${CMAKE_CURRENT_BINARY_DIR}/cl/Infrastructures)
+file(MAKE_DIRECTORY ${build_Infrastructures_dir})
+file(COPY ${OPENCL_INFRASTRUCTURES_FILES} DESTINATION ${build_Infrastructures_dir})

@@ -18,6 +18,7 @@
 
 //#include "../utilities/QUtilityMath.h"
 #include "QGCVisualizer.h"
+#include <iostream>
 
 QGCVisualizer::QGCVisualizer(QWidget* parent) : QCommon(parent)
 {
@@ -49,26 +50,31 @@ void QGCVisualizer::initWidgets()
 {
     std::ifstream file("./settings/settings_graph_cut.txt");
     std::string line;
+    
 
     std::getline(file, line);
     line = line.substr(line.find_first_of(':') + 1);
     std::string dataset = line;
     QUtilityMath::trim(dataset);
+    std::cout << dataset << std::endl;
 
     std::getline(file, line);
     line = line.substr(line.find_first_of(':') + 1);
     std::string corporation = line;
     QUtilityMath::trim(corporation);
+    std::cout << corporation << std::endl;
 
     file.close();
 
     panel_ = new QGCPanel(parent_);
     this->setCentralWidget(panel_);
-
+    
+    
     const Ui::QGCPanel* ui = ((QGCPanel*)panel_)->getUI();
     ui->widgetRender->initConnections((QGCPanel* )panel_);
     ui->widgetRender->initData(dataset);
     ui->widgetRender->initCorporation(corporation);
 
     ((QGCPanel*)panel_)->initialize(ui->widgetRender->dataFilePath);
+    std::cout << "Got here" << std::endl;
 }

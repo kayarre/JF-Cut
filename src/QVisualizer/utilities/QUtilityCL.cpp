@@ -252,6 +252,17 @@ void QUtilityCL::getCachedProgram(const cl::Context &context, const cl::Device &
     const std::string& path, const std::list<std::string>& files,
     const std::string& options, const std::string& header)
 {
+	//std::cout << "path " << path << std::endl;
+    //std::cout << "files:";
+    //std::list<std::string>::const_iterator it;
+    //std::list<std::string>::iterator it;
+	//for (it=files.begin(); it != files.end(); ++it) {
+	//	std::cout << *it << " ";
+	//}
+	//std::cout << std::endl;
+	
+    //std::cout << "options " << options << std::endl;
+    //std::cout << "header " << header << std::endl;
     if (files.empty())
         throw QError(2, Q_RUNTIME_ERROR, "no files.");
 
@@ -300,6 +311,7 @@ void QUtilityCL::getCachedProgram(const cl::Context &context, const cl::Device &
 
         std::vector<char*> binaries = program.getInfo<CL_PROGRAM_BINARIES>();
         std::vector<::size_t> sizes = program.getInfo<CL_PROGRAM_BINARY_SIZES>();
+        
         if (!QIO::saveFileData(prefix + ".bin.tmp", binaries.front(), sizes.front()))
             throw QError(2, Q_RUNTIME_ERROR, "save binary file failed.");
 

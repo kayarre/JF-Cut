@@ -14,10 +14,7 @@
  * @date    2013/01/09
  */
 
-#ifndef __GLEW
-#define __GLEW
 #include <GL/glew.h>
-#endif
 
 #include <climits>
 #include <cmath>
@@ -32,22 +29,13 @@
 #include <QKeyEvent>
 #include <QTime>
 
-#ifndef __CL_ENABLE_EXCEPTIONS
-#define __CL_ENABLE_EXCEPTIONS
-#endif
 
-
-#ifndef CL_STACKTRACE
 #include "../3rdParty/cl/cl_stacktrace.hpp"
-#endif
 
-#ifndef __OPEN_CL_CXX
-#define __OPEN_CL_CXX
 #if defined(__APPLE__) || defined(__MACOSX)
 #include <OpenCL/cl.hpp>
 #else
 #include <CL/cl.hpp>
-#endif
 #endif
 
 #include "../3rdParty/stacktrace/call_stack_msvc.hpp"
@@ -66,6 +54,10 @@
 #include "QGCSetting.h"
 #include "QGCPanel.h"
 #include "QGCWidget.h"
+
+#if defined(UNIX)
+#include <GL/glx.h>
+#endif
 
 typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
     const cl_context_properties *properties,
@@ -711,12 +703,16 @@ void QGCWidget::initContext()
         if (error |= !QUtilityGL::checkSupport()) return;
 
         initOpenCL();
+        std::cout << " > INFO: init success" << std::endl;
         initConfigurations();
+        std::cout << " > INFO: config success" << std::endl;
         initPrograms();
+        std::cout << " > INFO: programs succes" << std::endl;
 
         this->initialized = true;
 
         initArguments();
+        std::cout << " > INFO: init Arguments sucess" << std::endl;
     }
     catch (QError& e)
     {
@@ -747,6 +743,7 @@ void QGCWidget::initContext()
 
 void QGCWidget::initOpenCL()
 {
+
     // Platform info
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
@@ -756,7 +753,7 @@ void QGCWidget::initOpenCL()
     cl_bool openclSupported = 0, openglSupported = 0, imageSupport = 0, deviceSupported = 0;
     std::vector<cl_context_properties> clProperties(0);
     for(auto i = platforms.begin(); i != platforms.end(); i++)
-    {
+    {	
         clGetGLContextInfoKHR = (clGetGLContextInfoKHR_fn) clGetExtensionFunctionAddressForPlatform((*i)(), "clGetGLContextInfoKHR");
         if (!clGetGLContextInfoKHR) continue;
 
@@ -772,25 +769,49 @@ void QGCWidget::initOpenCL()
         std::vector<cl::Device> devices;
         i->getDevices(CL_DEVICE_TYPE_GPU, &devices);
         
-        for (auto j = devices.begin(); j != devices.end(); j++)
+        for (auto dev = devices.begin(); dev != devices.end(); dev++)
         {
-            imageSupport = j->getInfo<CL_DEVICE_IMAGE_SUPPORT>();
+			
+			#if defined (__APPLE__) || defined(MACOSX)
+			static const char* CL_GL_SHARING_EXT = "cl_APPLE_gl_sharing";
+			#else
+			static const char* CL_GL_SHARING_EXT = "cl_khr_gl_sharing";
+			#endif
+			// Get string containing supported device extensions
+			std::string ext_string;
+			size_t ext_size;
+			dev->getInfo(CL_DEVICE_EXTENSIONS, &ext_string);
+			//std::cout << "\t CL_DEVICE_EXTENSIONS: " << ext_string << " " << std::endl;
+			
+			// Search for GL support in extension string (space delimited)
+			cl_bool oglSupport = 0;
+			oglSupport = (ext_string.find(GL_SHARING_EXTENSION) != std::string::npos);
+			if( oglSupport )
+			{
+				// Device supports context sharing with OpenGL
+				printf("Found GL Sharing Support!\n");
+			}
+			
+			
+            imageSupport = dev->getInfo<CL_DEVICE_IMAGE_SUPPORT>();
             if (!imageSupport) continue;
 
-            std::string deviceExtension = j->getInfo<CL_DEVICE_EXTENSIONS>();
+            std::string deviceExtension = dev->getInfo<CL_DEVICE_EXTENSIONS>();
             openglSupported = deviceExtension.find(GL_SHARING_EXTENSION) != std::string::npos;
             if (!openglSupported) continue;
             
             // Define OS-specific context properties and create the OpenCL context
             std::vector<cl_context_properties> properties(0);
-            #ifdef __APPLE__
+            #if defined(__APPLE__)
+				std::cout << " apple sauce\n" << std::endl;
                 CGLContextObj kCGLContext = CGLGetCurrentContext();
                 CGLShareGroupObj kCGLShareGroup = CGLGetShareGroup(kCGLContext);
                 properties.push_back(CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE);
                 properties.push_back((cl_context_properties)kCGLShareGroup);
                 properties.push_back(0);
             #else
-                #ifdef UNIX
+                #if defined(UNIX)
+                    std::cout << " > unix\n" << std::endl;
                     properties.push_back(CL_GL_CONTEXT_KHR);
                     properties.push_back((cl_context_properties)glXGetCurrentContext());
                     properties.push_back(CL_GLX_DISPLAY_KHR);
@@ -799,6 +820,7 @@ void QGCWidget::initOpenCL()
                     properties.push_back((cl_context_properties)(*i)());
                     properties.push_back(0);
                 #elif defined(_WIN32) // Win32
+					std::cout << " > windos sucks\n" << std::endl;
                     properties.push_back(CL_GL_CONTEXT_KHR);
                     properties.push_back((cl_context_properties)wglGetCurrentContext());
                     properties.push_back(CL_WGL_HDC_KHR);
@@ -812,6 +834,7 @@ void QGCWidget::initOpenCL()
             cl_device_id device(0);
             cl_int status = clGetGLContextInfoKHR(properties.data(), CL_CURRENT_DEVICE_FOR_GL_CONTEXT_KHR, sizeof(cl_device_id),  &device, NULL);
             deviceSupported = status == CL_SUCCESS;
+            
             if (!deviceSupported) continue;
             
             clProperties = properties;
@@ -945,8 +968,9 @@ void QGCWidget::initClustering(const std::string& options, const std::string& he
 
     const char *prSources[] = { "graphcut_kmeans.cl", "graphcut_histogram.cl" };
     std::list<std::string> prFiles(prSources, prSources + sizeof(prSources) / sizeof(prSources[0]));
+    
+    // Hard coded place to save the files
     QUtilityCL::getCachedProgram(clContext, clDevice, progClustering, "./cl/GraphCut/", prFiles, options, headers);
-
     kerKMeans = cl::Kernel(progClustering, "graphcut_kmeans");
     kerKMeans.setArg(0, volumeSize);
     kerKMeans.setArg(1, imgFeature);
@@ -1323,8 +1347,11 @@ void QGCWidget::initPrograms()
     initCut(options, headers);
     initTag(options, headers);
     initReduce(options, headers);
+    std::cout << " > INFO: initReduce success" << std::endl;
     initRendering(options, headers);
+    std::cout << " > INFO: initRendering success" << std::endl;
     initUtility(options, headers);
+    std::cout << " > INFO: initUtility success" << std::endl;
 }
 
 void QGCWidget::initArguments()

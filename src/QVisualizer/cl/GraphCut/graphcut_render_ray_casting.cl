@@ -308,7 +308,11 @@ __kernel void graphcut_compute_visibility(
     tnear = max(tnear, 0.0f);  // clamp to near plane
     
     // march along ray from back to front, accumulating color
-    const uint4 cutOffset = (uint4)(1, volumeSize.x, volumeSize.x * volumeSize.y, 0) * sizeof(cl_cut);
+    const unsigned long cl_cut_size = sizeof(cl_cut);
+    const uint4 cutOffset = (uint4)(1U * cl_cut_size,
+							volumeSize.x*cl_cut_size,
+							volumeSize.x * volumeSize.y *cl_cut_size,
+							0U *cl_cut_size); // * sizeof(cl_cut);
     const float4 sampleMaxIndex = convert_float4(volumeSize - 1);
     const float4 sampleOffset = sampleMaxIndex * 0.5f;
     const float4 sampleScale = sampleOffset / volumeBoundingBox;
