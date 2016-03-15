@@ -253,13 +253,11 @@ void QUtilityCL::getCachedProgram(const cl::Context &context, const cl::Device &
     const std::string& options, const std::string& header)
 {
 	//std::cout << "path " << path << std::endl;
-    //std::cout << "files:";
-    //std::list<std::string>::const_iterator it;
-    //std::list<std::string>::iterator it;
-	//for (it=files.begin(); it != files.end(); ++it) {
-	//	std::cout << *it << " ";
-	//}
-	//std::cout << std::endl;
+    std::cout << "Building:";
+    std::list<std::string>::const_iterator it;
+	for (it=files.begin(); it != files.end(); ++it) {
+		std::cout << *it << " ";
+	}
 	
     //std::cout << "options " << options << std::endl;
     //std::cout << "header " << header << std::endl;

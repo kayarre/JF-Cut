@@ -28,6 +28,8 @@
 
 #include <QKeyEvent>
 #include <QTime>
+#include <QPixmap>
+#include <QCursor>
 
 
 #include "../3rdParty/cl/cl_stacktrace.hpp"
@@ -188,7 +190,7 @@ void QGCWidget::initData(const std::string &name)
         if (position == std::string::npos) position = dataFileName.find_last_of("/");
         if (position == std::string::npos) position = dataFileName.size() - 1;
         dataFilePath = dataFileName.substr(0, position + 1);
-
+		std::cout << dataFileName << std::endl;
         parseDataFile(dataFileName);
         
         if (!simplified)
@@ -1347,9 +1349,7 @@ void QGCWidget::initPrograms()
     initCut(options, headers);
     initTag(options, headers);
     initReduce(options, headers);
-    std::cout << " > INFO: initReduce success" << std::endl;
     initRendering(options, headers);
-    std::cout << " > INFO: initRendering success" << std::endl;
     initUtility(options, headers);
     std::cout << " > INFO: initUtility success" << std::endl;
 }
@@ -1441,7 +1441,7 @@ void QGCWidget::resizeGL(int w, int h)
 
     updatePixelBuffer();
 
-    repaint();
+    update();
 }
 
 void QGCWidget::updatePixelBuffer()
@@ -1936,7 +1936,8 @@ void QGCWidget::mousePressEvent(QMouseEvent *event)
     cl_uint offset = getBrushingObject();
     if (offset < 2 && !ui->radioButtonModeNormal->isChecked()) shot();
     
-    repaint();
+    //repaint();
+    update();
 }
 
 void QGCWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -1946,7 +1947,8 @@ void QGCWidget::mouseReleaseEvent(QMouseEvent *event)
 
     mouseMode = MOUSE_UNKNOW;
 
-    repaint();
+    //repaint();
+    update();
 }
 
 void QGCWidget::mouseMoveEvent(QMouseEvent *event)
@@ -1994,16 +1996,29 @@ void QGCWidget::mouseMoveEvent(QMouseEvent *event)
             break;
         }
     }
-
+    else if ( event->buttons() & Qt::LeftButton)
+    {
+		switch(mouseMode)
+		{
+		case MOUSE_ROTATE:
+			{
+				cl_uint offset = getBrushingObject();
+				if (offset < 2 && !ui->radioButtonModeNormal->isChecked()) shot();
+				break;
+			}
+		}
+	}
     mousePosition.x = event->x();
     mousePosition.y = event->y();
 
-    repaint();
+    //repaint();
+    update();
 }
 
 void QGCWidget::wheelEvent(QWheelEvent *event)
 {
-    repaint();
+    //repaint();
+    update();
 }
 
 // keyPressEvent
@@ -2037,7 +2052,8 @@ void QGCWidget::keyPressEvent(QKeyEvent *event)
         break;
     }
 
-    repaint();
+    //repaint();
+    update();
 }
 
 // K-Means
@@ -2183,22 +2199,34 @@ void QGCWidget::countActiveBlock(cl_long& nsecCount)
 
 void QGCWidget::relabelPush(cl_long& nsecRelabelPush)
 {
+	std::cout << " > DATA: relabelPush " << std::endl;
     if (hostTileOffset.empty()) return;
 
     cl::NDRange global(sizGlobal);
     cl::NDRange offset(0, 0, 0);
     std::vector<cl::Event> relabelPushEvents(hostTileOffset.size() - 1);
+    std::cout << " > DATA: relabelPushEvents " << std::endl;
+    std::cout <<  hostTileOffset.size() << std::endl;
     for (cl_int i = 1; i < hostTileOffset.size(); i++)
     {
+		
         cl_uint start = hostTileOffset[i - 1];
         cl_uint end = hostTileOffset[i];
-        if (start == end) { relabelPushEvents[i - 1] = 0; continue; }
+        if (start == end) {
+			std::cout << " > here " << std::endl;
+			relabelPushEvents[i - 1] = 0;
+			continue;
+		}
         
         const_cast<::size_t*>((const ::size_t*)global)[2] = end - start;
         const_cast<::size_t*>((const ::size_t*)offset)[2] = start;
+        std::cout << " > DATA: loop " << std::endl;
         clQueue.enqueueNDRangeKernel(kerPushRelabel, offset, global, sizLocal, NULL, &relabelPushEvents[i - 1]);
+        clQueue.finish();
     }
+    std::cout << " > DATA: end " << std::endl;
     nsecRelabelPush += QUtilityCL::getElapsedTime(relabelPushEvents, clQueue);
+    std::cout << " > DATA: test " << std::endl;
 }
 
 void QGCWidget::relabelPushFast(cl_long& nsecRelabelPush)
@@ -2411,8 +2439,9 @@ void QGCWidget::slotToolkitTypeChanged()
 
 void QGCWidget::slotCutClicked()
 {
+	
     if (error) return;
-
+	
     try
     {
         const Ui::QGCPanel* ui = panel->getUI();
@@ -2424,7 +2453,7 @@ void QGCWidget::slotCutClicked()
 
         cl_long currFlow = 0, initFlow = 0;
         cl_long nsecInit = 0, nsecRelabelPush = 0, nsecCount = 0, nsecCut = 0, nsecFlow = 0;
-
+		
         if (ui->checkBoxCut->isChecked())
         {
             slotLoadCutClicked();
@@ -2455,7 +2484,6 @@ void QGCWidget::slotCutClicked()
         {
             reduceFlow(initFlow, nsecFlow);
         }
-
         QTime tGraphCut = QDateTime::currentDateTime().time();
         bool finished = false;
         while (!finished && iterations < totalIterations)
@@ -2464,7 +2492,7 @@ void QGCWidget::slotCutClicked()
             {
                 countActiveBlock(nsecCount);
             }
-
+			std::cout << " radioButtonCutMethodJFCut" << std::endl;
             if (ui->radioButtonCutMethodJFCut->isChecked())
             {
                 relabelPush(nsecRelabelPush);
@@ -2473,7 +2501,7 @@ void QGCWidget::slotCutClicked()
             {
                 relabelPushFast(nsecRelabelPush);
             }
-
+			std::cout << " iterations" << std::endl;
             iterations++;
 
             if (ui->checkBoxPrint->isChecked())
@@ -2491,12 +2519,13 @@ void QGCWidget::slotCutClicked()
             }
         }
         if (settings.enableLoggingTimeCost) QUtilityConsole::printTimeCost(tGraphCut.msecsTo(QDateTime::currentDateTime().time()), "graphCut() total - ");
-
+		
+		std::cout << " computeTag" << std::endl;
         if (ui->checkBoxComputeTag->isChecked())
         {
             computeTag(nsecCut);
         }
-
+		std::cout << " checkBoxEnergy" << std::endl;
         if (ui->checkBoxEnergy->isChecked())
         {
             clQueue.enqueueReadBuffer(devCut, true, 0, hostCut.size() * sizeof(cl_cut), hostCut.data());
@@ -2576,7 +2605,8 @@ void QGCWidget::slotCutClicked()
         else
             clQueue.enqueueCopyBufferToImage(devCut, imgCut3D, 0, imgOrigin, imgRegion);
 
-        repaint();
+        //repaint();
+		update();
     }
     catch (QError& e)
     {
@@ -2673,7 +2703,8 @@ void QGCWidget::slotClearClicked()
     computeExtremum(offset);
     if (settings.enableLoggingTimeCost) QUtilityConsole::printTimeCost(tComputeDistribution.msecsTo(QDateTime::currentDateTime().time()), "computeExtremum()");
     
-    repaint();
+    //repaint();
+    update();
 }
 
 void QGCWidget::slotLoadGraphClicked()
@@ -3032,7 +3063,8 @@ void QGCWidget::slotLoadCutClicked()
     for (int i = 0; i < QGCSetting::sizeTexture; i++)
         computeExtremum(i);
 
-    repaint();
+    //repaint();
+    update();
 }
 
 void QGCWidget::slotSaveCutClicked()

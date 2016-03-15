@@ -169,8 +169,9 @@ include_directories(${Boost_INCLUDE_DIR}
                     )
 
 add_executable(test_build
-				${SOURCE} ${HEADERS} ${OPENCL_GRAPHCUT_FILES}
-				${OPENCL_INFRASTRUCTURES_FILES}
+				${SOURCE} ${HEADERS}
+				#${OPENCL_GRAPHCUT_FILES}
+				#${OPENCL_INFRASTRUCTURES_FILES}
 				)
 target_link_libraries(test_build
   Qt5::Widgets  Qt5::Xml Qt5::Core Qt5::Gui	Qt5::OpenGL
